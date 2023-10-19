@@ -1,0 +1,74 @@
+<div class="container border pt-2 pb-2">
+  <div class="row" [formGroup]="todoForm">
+    <div class="col-md-2 p-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Title"
+        formControlName="title"
+      />
+    </div>
+    <div class="col-md-2 p-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Description"
+        formControlName="description"
+      />
+    </div>
+    <div class="col-md-2 p-2">
+      <input
+        type="date"
+        class="form-control"
+        placeholder="End Date"
+        formControlName="endDate"
+      />
+    </div>
+    <!-- <div class="col-md-2 p-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Staus"
+        formControlName="status"
+      />
+    </div> -->
+    <div class="col-md-3 p-2">
+      <button
+        class="btn btn-success"
+        (click)="addItem()"
+        [disabled]="!todoForm.valid"
+      >
+        Add new
+      </button>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">endDate</th>
+            <th scope="col">status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of renderList; let i = index">
+            <th>{{ item.title }}</th>
+            <td>{{ item.description }}</td>
+            <td>{{ item.endDate }}</td>
+            <td>{{ item.status }}</td>
+            <td>
+              <span (click)="editItem(i, item)">Edit</span>/<span
+                (click)="deleteItem(i)"
+                >Delete</span
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
