@@ -11,23 +11,25 @@ import { EditDailogComponent } from '../dailogBox/edit-dailog/edit-dailog.compon
 })
 export class ToDoListComponent {
   todoForm!: FormGroup;
-  disableTextbox: boolean = true;
   renderList: any[] = [];
   constructor(
     private fb: FormBuilder,
     private localStroge: LocalStorageService,
     public dialog: MatDialog
   ) {
-    // localStorage.clear();
     this.createForm();
     this.getList();
+    this.deleteFromDropDown();
   }
+
   createForm() {
     this.todoForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       endDate: ['', Validators.required],
       status: ['To Do'],
+      search: [''],
+      deleteOption: [],
     });
   }
 
@@ -35,12 +37,11 @@ export class ToDoListComponent {
     let itemList = this.localStroge.getStorgeData();
     if (itemList && itemList.length) {
       this.renderList = itemList;
-      console.log('fdsfsd');
     }
   }
   addItem() {
     let todoItem = this.todoForm.value;
-    console.log('Kya');
+    todoItem.id = this.renderList.length + 1;
     this.renderList.push(todoItem);
     this.localStroge.saveLocalStorgeData(this.renderList);
     this.getList();
@@ -51,22 +52,36 @@ export class ToDoListComponent {
     this.todoForm.get('description')?.reset();
     this.todoForm.get('endDate')?.reset();
   }
-  deleteItem(index: any) {
-    console.log(index);
-    if (index > -1) {
-      this.renderList.splice(index, 1);
-      this.localStroge.saveLocalStorgeData(this.renderList);
-    }
+  deleteItem(id: any) {
+    this.renderList = this.renderList.filter((element) => {
+      return element.id !== id;
+    });
+    this.localStroge.saveLocalStorgeData(this.renderList);
+    this.todoForm.get('search')?.reset();
   }
-  editItem(index: any, record: any) {
-    console.log('Edit', index, record);
+  editItem(item: any) {
     let dialogRef = this.dialog.open(EditDailogComponent, {
       height: '400px',
       width: '600px',
-      data: { index: index, record: record },
+      data: item,
     });
     dialogRef.afterClosed().subscribe((result) => {
       this.getList();
+      this.todoForm.get('search')?.reset();
     });
+  }
+  deleteFromDropDown() {
+    this.todoForm.get('deleteOption')?.valueChanges.subscribe((res: any) => {
+      if (res && res !== null) {
+        this.deleteAll(res);
+      }
+    });
+  }
+
+  deleteAll(status: string) {
+    this.renderList = this.renderList.filter((element) => {
+      return element.status !== status;
+    });
+    this.localStroge.saveLocalStorgeData(this.renderList);
   }
 }

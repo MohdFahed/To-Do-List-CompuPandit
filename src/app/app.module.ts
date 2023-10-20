@@ -7,8 +7,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToDoListComponent } from './to-do-list/to-do-list.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EditDailogComponent } from './dailogBox/edit-dailog/edit-dailog.component';
+import { FilterPipe } from './filter.pipe';
 @NgModule({
-  declarations: [AppComponent, ToDoListComponent, EditDailogComponent],
+  declarations: [AppComponent, ToDoListComponent, EditDailogComponent, FilterPipe],
   imports: [
     BrowserModule,
     AppRoutingModule,

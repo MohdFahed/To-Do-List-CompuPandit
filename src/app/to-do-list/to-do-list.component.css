@@ -1,0 +1,10 @@
+.text-decoration-line-through {
+  text-decoration: line-through !important;
+}
+img {
+  height: 15px;
+  width: 15px;
+}
+img:hover {
+  cursor: pointer;
+}
